@@ -4,45 +4,44 @@ import app.model.User;
 import app.repositories.UserRepos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional()
 public class UserService {
 
-    private final UserRepos userService;
+    private final UserRepos userRepo;
 
     @Autowired
-    public UserService(UserRepos userService) {
-        this.userService = userService;
+    public UserService(UserRepos userRepo) {
+        this.userRepo = userRepo;
     }
 
     public List<User> getAllUser() {
-        return userService.findAll();
+        return userRepo.findAll();
     }
 
     public User foundUser(Integer id) {
-        Optional<User> foundUser = userService.findById(id);
+        Optional<User> foundUser = userRepo.findById(id);
         return foundUser.orElse(null);
     }
 
     @Transactional
     public void save(User user) {
-        userService.save(user);
+        userRepo.save(user);
     }
 
     @Transactional
     public void updateUser(Integer id, User user){
         user.setId(id);
-        userService.save(user);
+        userRepo.save(user);
     }
 
     @Transactional
     public void deleteUser(Integer id) {
-        userService.deleteById(id);
+        userRepo.deleteById(id);
     }
 
 }

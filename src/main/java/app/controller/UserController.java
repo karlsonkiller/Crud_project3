@@ -25,25 +25,25 @@ public class UserController {
     @GetMapping()
     public String index(Model model) {
         model.addAttribute("users", userService.getAllUser());
-        return "users/index";
+        return "view/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Integer id, Model model) {
         model.addAttribute("users", userService.foundUser(id));
-        return "users/show";
+        return "view/show";
     }
 
     @GetMapping("/new")
     public String newPerson(@ModelAttribute("users") User user) {
-        return "users/new";
+        return "view/new";
     }
 
     @PostMapping()
     public String create(@ModelAttribute("users") @Valid User user,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors())
-            return "users/new";
+            return "view/new";
 
         userService.save(user);
         return "redirect:/users";
@@ -52,14 +52,14 @@ public class UserController {
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("users", userService.foundUser(id));
-        return "users/editor";
+        return "view/editor";
     }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("users") @Valid User user, BindingResult bindingResult,
                          @PathVariable("id") Integer id) {
         if (bindingResult.hasErrors())
-            return "users/editor";
+            return "view/editor";
 
         userService.updateUser(id, user);
         return "redirect:/users";
@@ -68,6 +68,6 @@ public class UserController {
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Integer id) {
         userService.deleteUser(id);
-        return "redirect:/user";
+        return "redirect:/users";
     }
 }
