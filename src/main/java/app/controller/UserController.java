@@ -25,49 +25,49 @@ public class UserController {
     @GetMapping()
     public String index(Model model) {
         model.addAttribute("users", userService.getAllUser());
-        return "index";
+        return "users/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Integer id, Model model) {
-        model.addAttribute("person", userService.foundUser(id));
-        return "/show";
+        model.addAttribute("users", userService.foundUser(id));
+        return "users/show";
     }
 
     @GetMapping("/new")
-    public String newPerson(@ModelAttribute("person") User user) {
-        return "new";
+    public String newPerson(@ModelAttribute("users") User user) {
+        return "users/new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("person") @Valid User user,
+    public String create(@ModelAttribute("users") @Valid User user,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors())
-            return "new";
+            return "users/new";
 
         userService.save(user);
-        return "redirect:/people";
+        return "redirect:/users";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Integer id) {
-        model.addAttribute("person", userService.foundUser(id));
-        return "editor";
+        model.addAttribute("users", userService.foundUser(id));
+        return "users/editor";
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("person") @Valid User user, BindingResult bindingResult,
+    public String update(@ModelAttribute("users") @Valid User user, BindingResult bindingResult,
                          @PathVariable("id") Integer id) {
         if (bindingResult.hasErrors())
-            return "editor";
+            return "users/editor";
 
         userService.updateUser(id, user);
-        return "redirect:/people";
+        return "redirect:/users";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Integer id) {
         userService.deleteUser(id);
-        return "redirect:/people";
+        return "redirect:/user";
     }
 }
