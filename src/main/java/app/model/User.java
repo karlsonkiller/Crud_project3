@@ -1,27 +1,38 @@
 package app.model;
 
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.GenerationType;
 
 @Entity
 @Table(name = "users")
 public class User {
 
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "Name")
+    @Column()
     private String firstName;
 
-    @Column(name = "Last_Name")
+    @Column()
     private String lastName;
 
-    @Column(name = "Age")
+    @Column()
     private Integer age;
 
+    public User() {
 
+    }
+
+    public User(String firstName, String lastName, Integer age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+    }
 
     public Integer getId() {
         return id;

@@ -1,13 +1,13 @@
 package app.controller;
 
+import app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import app.model.User;
-import app.service.UserService;
-
+import app.service.UserServiceImpl;
 import javax.validation.Valid;
 
 @Controller
@@ -17,33 +17,32 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
-
 
     @GetMapping()
     public String index(Model model) {
         model.addAttribute("users", userService.getAllUser());
-        return "view/index";
+        return "pages/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Integer id, Model model) {
         model.addAttribute("users", userService.foundUser(id));
-        return "view/show";
+        return "pages/show";
     }
 
     @GetMapping("/new")
     public String newPerson(@ModelAttribute("users") User user) {
-        return "view/new";
+        return "pages/new";
     }
 
     @PostMapping()
     public String create(@ModelAttribute("users") @Valid User user,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors())
-            return "view/new";
+            return "pages/new";
 
         userService.save(user);
         return "redirect:/users";
@@ -52,14 +51,14 @@ public class UserController {
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("users", userService.foundUser(id));
-        return "view/editor";
+        return "pages/editor";
     }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("users") @Valid User user, BindingResult bindingResult,
                          @PathVariable("id") Integer id) {
         if (bindingResult.hasErrors())
-            return "view/editor";
+            return "pages/editor";
 
         userService.updateUser(id, user);
         return "redirect:/users";
